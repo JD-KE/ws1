@@ -17,22 +17,22 @@ public class ws1 {
 
             String[] inputs = input.trim().split(" ", 2);
 
-            for (String word: inputs) {
-                System.out.println(word);
-            }
+            // for (String word: inputs) {
+            //     System.out.println(word);
+            // }
 
-            String action = inputs[0];
+            String action = inputs[0].toLowerCase();
 
             switch(action) {
                 case "list":
                     {
-                        // if(shoppingCart.size() == 0) {
-                        //     System.out.println("Your cart is empty");
-                        // } else {
-                        //     for (int i; i < shoppingCart.size(); i++) {
-                        //         System.out.printf("%d. %s\n", (i+1), shoppingCart.get(i));
-                        //     }
-                        // }
+                        if(shoppingCart.size() == 0) {
+                            System.out.println("Your cart is empty");
+                        } else {
+                            for (int i = 0; i < shoppingCart.size(); i++) {
+                                System.out.printf("%d. %s\n", (i+1), shoppingCart.get(i));
+                            }
+                        }
                     }
                     break;
                 
@@ -50,12 +50,35 @@ public class ws1 {
                         }
                     }
                     break;
+
+                case "delete":
+                    {
+                        int index = Integer.parseInt(inputs[1]) - 1;
+                        if (index < 0 || index >= shoppingCart.size()) {
+                            System.out.println("Incorrect item index");
+                        } else {
+                            String item = shoppingCart.remove(index);
+                            System.out.printf("%s removed from cart\n", item);
+                        }
+                    }
+                    break;
+                
+                case "quit":
+                    {
+                        flag = false;
+                    }
+                    break;
                 default:
-                    System.out.println("Nothing happened");
+                    System.out.println("""
+                            Please use the following commands:
+                            - list
+                            - add items (add item1, item2, ...)
+                            - delete items by item number (remove itemNumber)
+                            - quit""");
                     break;
             }
 
-            flag = false;
+            
         }
 
     }
