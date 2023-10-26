@@ -2,7 +2,7 @@ import java.io.Console;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ws1 {
+public class ShoppingCart {
     public static void main(String[] args) {
         List<String> shoppingCart = new ArrayList<>();
         
