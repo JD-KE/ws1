@@ -8,25 +8,33 @@ import java.util.List;
 public class ShoppingCart {
     public static void main(String[] args) {
         List<String> shoppingCart = new ArrayList<>();
-        List<String> users = new ArrayList<>();
-        File db = new File("./db");
+        // List<String> users = new ArrayList<>();
+        File db = new File(".\\db");
 
         if(!db.exists()) {
             db.mkdir();
         }
-        
 
         if (args.length > 0) {
             System.out.printf("Alternative database path entered as %s.\n",args[0]);
             Path dbPath = Paths.get(args[0]);
             File tempDb = dbPath.toFile();
-            if (!(tempDb == db) && (!tempDb.exists() || tempDb.isFile())) {
+            // if (!(tempDb == db) && (!tempDb.exists() || tempDb.isFile())) {
+            //     tempDb.mkdirs();
+            //     db = tempDb;
+            //     System.out.printf("Database not found at entered path. Created new dir as %s.\n", db.toString());
+            // } else if (tempDb.exists() && tempDb.isFile()) {
+            //     db == tempDb;
+            // }
+            if (tempDb.exists() && !tempDb.isFile()) {
+                db = tempDb;
+            } else {
                 tempDb.mkdirs();
                 db = tempDb;
-                System.out.printf("Database not found at entered path. Created new dir as %s.\n", db.toString());
             }
-            
         }
+
+        ShoppingCartDB.setdb(db);
         
         
         Console cons = System.console();
@@ -44,7 +52,7 @@ public class ShoppingCart {
             //     System.out.println(word);
             // }
 
-            String action = inputs[0].toLowerCase();
+            String action = inputs[0].trim().toLowerCase();
 
             switch(action) {
                 case "list":
@@ -91,6 +99,26 @@ public class ShoppingCart {
                         flag = false;
                     }
                     break;
+
+                case "login":
+                    {
+                        String user = inputs[1];
+                        shoppingCart = ShoppingCartDB.load(user);
+                    }
+                    break;
+
+                case "save":
+                    {
+                        ShoppingCartDB.save(shoppingCart);
+                    }
+                    break;
+                
+                case "users":
+                    {
+                        ShoppingCartDB.users();
+                    }
+                    break;
+
                 default:
                     System.out.println("""
                             Please use the following commands:
