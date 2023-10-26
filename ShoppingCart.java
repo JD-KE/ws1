@@ -1,10 +1,33 @@
 import java.io.Console;
+import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ShoppingCart {
     public static void main(String[] args) {
         List<String> shoppingCart = new ArrayList<>();
+        List<String> users = new ArrayList<>();
+        File db = new File("./db");
+
+        if(!db.exists()) {
+            db.mkdir();
+        }
+        
+
+        if (args.length > 0) {
+            System.out.printf("Alternative database path entered as %s.\n",args[0]);
+            Path dbPath = Paths.get(args[0]);
+            File tempDb = dbPath.toFile();
+            if (!(tempDb == db) && (!tempDb.exists() || tempDb.isFile())) {
+                tempDb.mkdirs();
+                db = tempDb;
+                System.out.printf("Database not found at entered path. Created new dir as %s.\n", db.toString());
+            }
+            
+        }
+        
         
         Console cons = System.console();
         
@@ -13,7 +36,7 @@ public class ShoppingCart {
         boolean flag = true;
 
         while(flag) {
-            String input = cons.readLine();
+            String input = cons.readLine(">");
 
             String[] inputs = input.trim().split(" ", 2);
 
