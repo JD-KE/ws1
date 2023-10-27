@@ -11,10 +11,15 @@ public class ShoppingCart {
         // List<String> users = new ArrayList<>();
         File db = new File(".\\db");
 
+        // make default directory
         if(!db.exists()) {
             db.mkdir();
         }
 
+        /*  if alternative database directory path passed, check if 
+            - directory exists and pass to db variable
+            - if not, make the new directory at the path passed with required parent directories 
+        */
         if (args.length > 0) {
             System.out.printf("Alternative database path entered as %s.\n",args[0]);
             Path dbPath = Paths.get(args[0]);
@@ -34,8 +39,8 @@ public class ShoppingCart {
             }
         }
 
+        // pass db file to helper ShoppingCartDB class
         ShoppingCartDB.setdb(db);
-        
         
         Console cons = System.console();
         
@@ -43,6 +48,7 @@ public class ShoppingCart {
 
         boolean flag = true;
 
+        // helper class used for login, save and user commands
         while(flag) {
             String input = cons.readLine(">");
 
@@ -139,9 +145,6 @@ public class ShoppingCart {
                             - quit the program (quit)""");
                     break;
             }
-
-            
         }
-
     }
 }
