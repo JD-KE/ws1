@@ -126,10 +126,17 @@ public class ShoppingCart {
                 default:
                     System.out.println("""
                             Please use the following commands:
-                            - list
-                            - add items (add item1, item2, ...)
-                            - delete items by item number (delete itemNumber)
-                            - quit""");
+                            - list items in current list (list)
+                            - add items to current (add item1, item2, ...)
+                            - delete an item by item number (delete itemNumber)
+                            - login as a user and reads the shopping cart in their file (login username)
+                                - opens new file if new user
+                                - opens existing file if existing user
+                                - replaces current shopping cart with user's shopping cart
+                            - save current items in shopping cart to user's file (save)
+                                -Must be logged in as a user to work; else a warning appears nothing happens
+                            - users which are in the current database directory are listed (users)
+                            - quit the program (quit)""");
                     break;
             }
 
