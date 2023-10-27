@@ -53,12 +53,16 @@ public class ShoppingCart {
 
                 case "delete":
                     {
-                        int index = Integer.parseInt(inputs[1]) - 1;
-                        if (index < 0 || index >= shoppingCart.size()) {
-                            System.out.println("Incorrect item index");
-                        } else {
-                            String item = shoppingCart.remove(index);
-                            System.out.printf("%s removed from cart\n", item);
+                        try {
+                            int index = Integer.parseInt(inputs[1]) - 1;
+                            if (index < 0 || index >= shoppingCart.size()) {
+                                System.out.println("Incorrect item index");
+                            } else {
+                                String item = shoppingCart.remove(index);
+                                System.out.printf("%s removed from cart\n", item);
+                            } 
+                        } catch (NumberFormatException e) {
+                            System.err.println("Invalid input, please add a single whole number after delete.");
                         }
                     }
                     break;
@@ -73,7 +77,7 @@ public class ShoppingCart {
                             Please use the following commands:
                             - list
                             - add items (add item1, item2, ...)
-                            - delete items by item number (remove itemNumber)
+                            - delete items by item number (delete itemNumber)
                             - quit""");
                     break;
             }
