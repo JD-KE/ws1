@@ -42,6 +42,9 @@ public class ShoppingCartDB {
                 shoppingCart.add(sc.nextLine());
             }
 
+            /* In case existing file does not have path in first line;
+            encountered indexOutOfBounds exception during testing when a few blank files was produced thanks
+            to weird things happening when closing with try with resources */
             if (shoppingCart.size() != 0){
                 shoppingCart.remove(0);
             }
@@ -80,11 +83,12 @@ public class ShoppingCartDB {
 
                 System.out.println("Your cart has been saved.");
 
+                // remove current user and clear stored cart in helper class
                 currentUser = null;
                 shoppingCart.clear();
 
             } catch (IOException e) {
-                System.err.println("An error occurred when logging in.");
+                System.err.println("An error occurred when saving.");
                 // e.printStackTrace();
             }
         }
@@ -92,8 +96,10 @@ public class ShoppingCartDB {
 
     public static void users() {
         System.out.println("The following users are registered");
+        // get array of files
         File [] files = db.listFiles();
 
+        // check if files end with .db, then get users' names from file name and print
         for (int i = 0; i < files.length; i++) {
             String extName = files[i].getName();
             if (extName.endsWith(".db")) {
