@@ -24,25 +24,23 @@ public class ShoppingCartDB {
         File userFile = new File(db, String.format("%s.db",user));
         
         // create new user .db file if does not exist and write path into first line
-        try {
-            if (userFile.createNewFile()) {
-                FileWriter writer = new FileWriter(userFile);
+        if (!userFile.exists() || !userFile.isFile()) {
+
+            try (FileWriter writer = new FileWriter(userFile);){
+                userFile.createNewFile();
                 writer.write(userFile.toString());
-                writer.close();
+            } catch (IOException e) {
+                System.err.println("An error occurred when logging in as new user.");
+                // e.printStackTrace();
             }
-        } catch (IOException e) {
-            System.err.println("An error occurred when logging in.");
-            // e.printStackTrace();
         }
 
         // reads user file for items and returns list to
-        try {
-            Scanner sc = new Scanner(userFile);
-           
+        try (Scanner sc = new Scanner(userFile);) {
+            
             while(sc.hasNextLine()) {              
                 shoppingCart.add(sc.nextLine());
             }
-            sc.close();
 
             if (shoppingCart.size() != 0){
                 shoppingCart.remove(0);
@@ -58,7 +56,7 @@ public class ShoppingCartDB {
             }
             
         } catch (FileNotFoundException e) {
-            System.err.println("An error occurred.");
+            System.err.println("An error occurred when loggin in: user's cart cannot be read.");
             // e.printStackTrace();
         }
 
@@ -70,16 +68,15 @@ public class ShoppingCartDB {
         if (currentUser == null) {
             System.out.println("Please log in as a user before saving.");
         } else {
-            try {
-                File userFile = new File(db, String.format("%s.db",currentUser));
-                FileWriter writer = new FileWriter(userFile, false);
+            File userFile = new File(db, String.format("%s.db",currentUser));
 
+            try (FileWriter writer = new FileWriter(userFile, false);) {
+                
                 writer.write(String.format("%s%n",userFile.toString()));
 
                 for (String item : shoppingCart) {
                     writer.write(String.format("%s%n", item));
                 }
-                writer.close();
 
                 System.out.println("Your cart has been saved.");
 
