@@ -1,3 +1,4 @@
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -26,9 +27,11 @@ public class ShoppingCartDB {
         // create new user .db file if does not exist and write path into first line
         if (!userFile.exists() || !userFile.isFile()) {
 
-            try (FileWriter writer = new FileWriter(userFile);){
+            try (FileWriter writer = new FileWriter(userFile)){
+                BufferedWriter bw = new BufferedWriter(writer);
                 userFile.createNewFile();
-                writer.write(userFile.toString());
+                bw.write(userFile.toString());
+                bw.flush();
             } catch (IOException e) {
                 System.err.println("An error occurred when logging in as new user.");
                 // e.printStackTrace();
@@ -74,12 +77,15 @@ public class ShoppingCartDB {
             File userFile = new File(db, String.format("%s.db",currentUser));
 
             try (FileWriter writer = new FileWriter(userFile, false);) {
+                BufferedWriter bw = new BufferedWriter(writer);
                 
-                writer.write(String.format("%s%n",userFile.toString()));
+                bw.write(String.format("%s%n",userFile.toString()));
 
                 for (String item : shoppingCart) {
-                    writer.write(String.format("%s%n", item));
+                    bw.write(String.format("%s%n", item));
                 }
+
+                bw.flush();
 
                 System.out.println("Your cart has been saved.");
 
