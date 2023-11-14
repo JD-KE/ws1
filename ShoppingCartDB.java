@@ -106,10 +106,13 @@ public class ShoppingCartDB {
         File [] files = db.listFiles();
 
         // check if files end with .db, then get users' names from file name and print
+        // use external index to deal with gap in number order in case got files that are not .db files
+        int count = 1;
         for (int i = 0; i < files.length; i++) {
             String extName = files[i].getName();
             if (extName.endsWith(".db")) {
-                System.out.printf("%d. %s%n", (i+1), extName.substring(0, (extName.length() - 3)));
+                System.out.printf("%d. %s%n", (count), extName.substring(0, (extName.length() - 3)));
+                count++;
             }
         }
     }
